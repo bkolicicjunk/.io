@@ -1,1 +1,429 @@
-example
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benjamin Kolicic - CV</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+  <style>
+    /* Global styles */
+    body, html { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; color: #000; background: #fff; }
+    a { color: inherit; text-decoration: none; }
+    section { padding: 1rem 2rem; max-width: 900px; margin: 0 auto; }
+
+    /* Parallax header - Fixed version */
+    .parallax {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    }
+    
+    .parallax-bg {
+      position: absolute;
+      top: 0%;
+      left: 0;
+      right: 0;
+      bottom: -50%;
+      background-image: url('images/Screenshot 2024-12-13 122627.png');
+      background-size: cover;
+      background-position: center;
+      will-change: transform;
+    }
+    
+    /* Clickable background overlay - sits above bg but below content */
+    .parallax-clickable {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .parallax-clickable:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .parallax .overlay {
+      background: rgba(0,0,0,0);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 2;
+      pointer-events: none; /* Allow clicks to pass through to clickable layer */
+    }
+    
+    .parallax-content {
+      z-index: 3; /* Higher than clickable layer */
+      position: relative;
+      text-align: center;
+    }
+    
+    .parallax h1 {
+      font-size: 3rem;
+      margin: 0;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease-out 0.5s forwards;
+    }
+    
+    .parallax p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease-out 0.8s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Enhanced contact overlay with glassmorphism */
+    .contact-overlay { 
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem 2.5rem;
+      display: inline-block;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease-out 1.1s forwards;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      z-index: 4; /* Highest z-index for links to work */
+    }
+    
+    .contact-overlay::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .contact-overlay:hover::before {
+      left: 100%;
+    }
+    
+    .contact-overlay:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .contact-overlay a { 
+      margin: 0 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 5; /* Ensure links are clickable */
+      display: inline-block;
+    }
+    
+    .contact-overlay a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Two-image gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 2px solid #000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Section headings */
+    h2 { 
+      border-bottom: 2px solid #000; 
+      padding-bottom: 0.5rem; 
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideInLeft 0.8s ease-out forwards;
+    }
+    
+    @keyframes slideInLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Lists and details */
+    .timeline { list-style: none; padding: 0; }
+    .timeline li { 
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-left: 3px solid #667eea;
+      background: #f9f9f9;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideInLeft 0.6s ease-out forwards;
+    }
+    .timeline li:nth-child(1) { animation-delay: 0.1s; }
+    .timeline li:nth-child(2) { animation-delay: 0.2s; }
+    .timeline li:nth-child(3) { animation-delay: 0.3s; }
+    .timeline li:nth-child(4) { animation-delay: 0.4s; }
+    
+    .timeline li:hover {
+      background: #f0f0f0;
+      transform: translateX(5px);
+    }
+    .timeline li span.date { 
+      font-weight: bold; 
+      margin-right: 0.5rem;
+      color: #667eea;
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .parallax h1 { font-size: 2rem; }
+      .parallax p { font-size: 1rem; }
+      section { padding: 2rem 1rem; }
+      .contact-overlay { 
+        padding: 1rem 1.5rem;
+        margin: 0 1rem;
+      }
+      .contact-overlay a {
+        display: block;
+        margin: 0.5rem 0;
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Parallax Banner -->
+  <header class="parallax" id="parallax-header">
+    <div class="parallax-bg" id="parallax-bg"></div>
+    <!-- Clickable background layer -->
+    <div class="parallax-clickable" id="parallax-clickable"></div>
+    <div class="overlay"></div>
+    <div class="parallax-content">
+      <h1>Benjamin Kolicic</h1>
+      <p>MSc (Hons) Mathematics Student</p>
+      <!-- Enhanced contact info overlay -->
+      <div class="contact-overlay">
+        <a href="https://www.linkedin.com/in/benjamin-kolicic-568710290/">LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section>
+    <h2>About Me</h2>
+    <ul class="timeline">
+      <li>
+        <p>I’m Benjamin Kolicic, a First Class Honours Mathematics graduate from the University of Durham and incoming MSc student in Mathematics and Computation at the London School of Economics.</p>
+        <p>Beyond my formal education, I have held a number of research roles in AI, Finance and Physics, as well as participated in several extracurriculars: from sending a bear to space to orchestral viola playing. </p>
+        <p>To learn more about me or my projects, please visit my <a href="https://www.linkedin.com/in/benjamin-kolicic-568710290/">LinkedIn</a> or click any image.</p>
+      </li>
+    </ul>
+  </section>
+
+  <ul class="timeline" style="margin: 0 auto; max-width: 900px;">
+    <li><span class="date">I am currently:</span>researching pre-hoc interpretable methods for neural models at NICT (Tokyo)</li>
+  </ul>
+  
+  <!-- Education Section -->
+  <section>
+    <h2>Education</h2>
+    <ul class="timeline">
+      <li><span class="date">2025–2026</span> <strong> MSc (Hons) Mathematics and Computation:</strong> London School of Economics</li>
+      <li><span class="date">2022–2025</span> <strong>BSc (Hons) Mathematics First Class Honours:</strong> University of Durham</li>
+    </ul>
+  </section>
+
+  <!-- Publications -->
+  <section>
+    <h2>Publications</h2>
+    <ul class="timeline">
+      <a href="https://doi.org/10.1109/ACSACW65225.2024.00009" style="text-decoration: none; color: inherit;">
+        <li>
+          <p><strong>Inherently Interpretable and Uncertainty-Aware Models for Online Learning in Cyber-Security Problems</strong></p>
+        </li>
+      </a>
+    </ul>
+  </section>
+
+  <section>
+    <div class="gallery">
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:7348465207389704192/">
+        <img src="images/photo1.jpg" alt="Project or event photo 1">
+      </a>
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:7291227670850199552/">
+        <img src="images/photo2.jpg" alt="Project or event photo 2">
+      </a>
+    </div>
+  </section>
+
+  
+  <!-- Experience Section -->
+  <section>      
+    <h2>Experience</h2>
+    <ul class="timeline">
+      
+      <li>
+        <span class="date">2025</span>
+        <p><strong> National Institute of Information and Communications Technology, Tokyo</strong></p>
+        <p><em> Artifical Intelligence Researcher</em></p>
+      </li>
+
+      <li>
+        <span class="date">2025</span>
+        <p><strong> Durham University Finance Society, Durham</strong></p>
+        <p><em> Quantitative Finance Researcher</em></p>
+      </li>
+
+      <li>
+        <span class="date">2024</span>
+        <p><strong> The Alan Turing Institute, London</strong></p>
+        <p><em> Artifical Intelligence Researcher</em></p>
+      </li>
+
+      <li>
+        <span class="date">2024</span>
+        <p><strong> University of Durham, Durham</strong></p>
+        <p><em> Solar Research Intern</em></p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skills & Interests -->
+  <section>
+    <h2>Skills & Interests</h2>
+    <ul class="timeline">
+      <li><span class="date">Computing:</span> Python (NumPy, PyTorch), R, C#, HTML, LaTeX</li>
+      <li><span class="date">Music:</span> ABRSM Grade 8 Violist</li>
+      <li><span class="date">Volunteering:</span> Rays of Sunshine, Everyone Matters</li>
+    </ul>
+  </section>
+
+  <script>
+    // Smooth parallax scrolling effect
+    function initParallax() {
+      const parallaxBg = document.getElementById('parallax-bg');
+      const parallaxHeader = document.getElementById('parallax-header');
+      const contactOverlay = document.querySelector('.contact-overlay');
+      const parallaxClickable = document.getElementById('parallax-clickable');
+      
+      if (!parallaxBg || !parallaxHeader) return;
+      
+      // Add click handler for the background
+      if (parallaxClickable) {
+        parallaxClickable.addEventListener('click', function(e) {
+          // Only trigger if the click didn't come from a child element (like contact links)
+          if (e.target === parallaxClickable) {
+            // Replace this with your desired action
+            window.open('https://www.linkedin.com/feed/update/urn:li:activity:7251001297313632257/', '_blank');
+            // Example: scroll to next section
+            //document.querySelector('section').scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+      
+      function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const headerHeight = parallaxHeader.offsetHeight;
+        const rate = scrolled * -0.5;
+        const contactRate = scrolled * -0.2; // Slower movement for contact
+        
+        // Only apply parallax when the header is visible
+        if (scrolled < headerHeight) {
+          parallaxBg.style.transform = `translate3d(0, ${rate}px, 0)`;
+          
+          // Add subtle parallax to contact overlay
+          if (contactOverlay) {
+            contactOverlay.style.transform = `translateY(${contactRate}px)`;
+          }
+        }
+      }
+      
+      // Use requestAnimationFrame for smooth performance
+      let ticking = false;
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+      
+      window.addEventListener('scroll', () => {
+        requestTick();
+        ticking = false;
+      });
+    }
+    
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initParallax);
+    } else {
+      initParallax();
+    }
+    
+    // Add intersection observer for animation triggers
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = '0s';
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+    
+    // Observe timeline items for staggered animations
+    document.querySelectorAll('.timeline li, h2').forEach(item => {
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html>
