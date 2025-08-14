@@ -151,16 +151,17 @@
       text-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
-    /* Two-image gallery */
+    /* Two-image gallery - landscape layout */
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      display: flex;
+      flex-direction: column;
       gap: 2rem;
       margin-top: 2rem;
     }
     .gallery img {
       width: 100%;
-      height: auto;
+      height: 250px;
+      object-fit: cover;
       display: block;
       border: 2px solid #fff;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
